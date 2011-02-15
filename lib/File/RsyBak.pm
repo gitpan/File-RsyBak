@@ -1,6 +1,6 @@
 package File::RsyBak;
 BEGIN {
-  $File::RsyBak::VERSION = '0.08';
+  $File::RsyBak::VERSION = '0.09';
 }
 # ABSTRACT: Backup files/directories with histories, using rsync
 
@@ -87,7 +87,7 @@ $SUBS{backup} = {
             summary      => 'Backup destination',
             arg_pos      => 1,
         }],
-        histories        => ['array*' => {
+        histories        => ['array' => {
             of           => 'int*',
             default      => [-7, 4, 3],
             summary      => 'Histories/history levels',
@@ -347,7 +347,7 @@ File::RsyBak - Backup files/directories with histories, using rsync
 
 =head1 VERSION
 
-version 0.08
+version 0.09
 
 =head1 SYNOPSIS
 
@@ -548,7 +548,7 @@ Extra options to pass to rsync command when doing backup. Note that the options
 will be shell quoted, , so you should pass it unquoted, e.g. ['--exclude',
 '/Program Files'].
 
-=item * B<histories>* => I<array> (default C<[-7, 4, 3]>)
+=item * B<histories> => I<array> (default C<[-7, 4, 3]>)
 
 Histories/history levels.
 

@@ -2,7 +2,7 @@ NAME
     File::RsyBak - Backup files/directories with histories, using rsync
 
 VERSION
-    version 0.08
+    version 0.09
 
 SYNOPSIS
     From your Perl program:
@@ -195,7 +195,7 @@ FUNCTIONS
         the options will be shell quoted, , so you should pass it unquoted,
         e.g. ['--exclude', '/Program Files'].
 
-    *   histories* => *array* (default "[-7, 4, 3]")
+    *   histories => *array* (default "[-7, 4, 3]")
 
         Histories/history levels.
 
