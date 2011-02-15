@@ -1,0 +1,49 @@
+Revision history for File-CRBackup
+
+0.08    2011-02-15
+
+        Rename from File-CRBackup -> File-RsyBak.
+
+        Remove the use of "cp -la" and use "rsync --link-dest" instead.
+
+        Allow remote sources.
+
+
+0.07    2011-02-11
+
+        Fix POD.
+
+
+0.06    2011-02-10
+
+        Add POD documentation for functions (using
+        Pod::Weaver::Plugin::SubSpec).
+
+
+0.05    2011-02-09
+
+        Add missing dependencies for script 'crbackup'.
+
+
+0.04    2011-02-09
+
+        Some small fixes and update to newer version of Sub::Spec::CmdLine.
+
+
+0.03    2011-02-09
+
+        Add script: crbackup.
+
+        Add more documentation.
+
+        Fix missing dependencies/use statements.
+
+
+0.02    2011-02-05
+
+        Add arguments: extra_cp_opts, extra_rsync_opts
+
+
+0.01    2011-02-04
+
+        First release.

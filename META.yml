@@ -1,0 +1,31 @@
+---
+abstract: 'Backup files/directories with histories, using rsync'
+author:
+  - 'Steven Haryanto <stevenharyanto@gmail.com>'
+build_requires:
+  Module::Build: 0.3601
+configure_requires:
+  Module::Build: 0.3601
+dynamic_config: 0
+generated_by: 'Dist::Zilla version 4.200003, CPAN::Meta::Converter version 2.102400'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: File-RsyBak
+requires:
+  File::Flock: 0
+  File::Path: 2.08
+  File::Slurp: 0
+  File::Which: 0
+  File::chdir: 0
+  Log::Any: 0
+  Log::Any::App: 0
+  String::ShellQuote: 0
+  Sub::Spec::CmdLine: 0.02
+  Taint::Util: 0
+  perl: 5.010000
+resources:
+  homepage: http://search.cpan.org/dist/File-RsyBak/
+  repository: http://github.com/sharyanto/perl-File-RsyBak
+version: 0.08
