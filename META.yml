@@ -28,4 +28,4 @@ requires:
 resources:
   homepage: http://search.cpan.org/dist/File-RsyBak/
   repository: http://github.com/sharyanto/perl-File-RsyBak
-version: 0.10
+version: 0.11
