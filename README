@@ -2,7 +2,7 @@ NAME
     File::RsyBak - Backup files/directories with histories, using rsync
 
 VERSION
-    version 0.12
+    version 0.13
 
 SYNOPSIS
     From your Perl program:
@@ -153,8 +153,12 @@ HOW IT WORKS
 FUNCTIONS
     None of the functions are exported by default, but they are exportable.
 
-  backup(%args) -> RESP
+  backup(%args) -> [STATUSCODE, ERRMSG, RESULT]
     Backup files/directories with histories, using rsync.
+
+    Returns a 3-element arrayref. STATUSCODE is 200 on success, or an error
+    code between 3xx-5xx (just like in HTTP). ERRMSG is a string containing
+    error message, RESULT is the actual result.
 
     Arguments ("*" denotes required arguments):
 

@@ -22,10 +22,10 @@ requires:
   Log::Any: 0
   Log::Any::App: 0
   String::ShellQuote: 0
-  Sub::Spec::CmdLine: 0.02
+  Sub::Spec::CmdLine: 0.22
   Taint::Util: 0
   perl: 5.010000
 resources:
   homepage: http://search.cpan.org/dist/File-RsyBak/
   repository: http://github.com/sharyanto/perl-File-RsyBak
-version: 0.12
+version: 0.13

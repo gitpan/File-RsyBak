@@ -3,7 +3,7 @@
 # workaround for dzil
 package rsybak;
 BEGIN {
-  $rsybak::VERSION = '0.12';
+  $rsybak::VERSION = '0.13';
 }
 # ABSTRACT: Backup files/directories with histories, using rsync
 
@@ -14,6 +14,8 @@ BEGIN {
     # reduce startup overhead if being invoked for bash completion
     unless ($ENV{COMP_LINE}) {
         require Log::Any::App;
+        # older Log::Any::App (< 0.26) which croaks when import() is not called
+        Log::Any::App->import();
     }
 }
 
@@ -30,7 +32,7 @@ rsybak - Backup files/directories with histories, using rsync
 
 =head1 VERSION
 
-version 0.12
+version 0.13
 
 =head1 DESCRIPTION
 

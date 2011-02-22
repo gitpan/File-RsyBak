@@ -1,6 +1,6 @@
 package File::RsyBak;
 BEGIN {
-  $File::RsyBak::VERSION = '0.12';
+  $File::RsyBak::VERSION = '0.13';
 }
 # ABSTRACT: Backup files/directories with histories, using rsync
 
@@ -23,7 +23,7 @@ require Exporter;
 our @ISA       = qw(Exporter);
 our @EXPORT_OK = qw(backup);
 
-our %SUBS;
+our %SPEC;
 
 sub _parse_path {
     my ($path) = @_;
@@ -75,7 +75,7 @@ sub _check_sources {
     [200, "OK"];
 }
 
-$SUBS{backup} = {
+$SPEC{backup} = {
     summary       =>
         'Backup files/directories with histories, using rsync',
     args          => {
@@ -349,7 +349,7 @@ File::RsyBak - Backup files/directories with histories, using rsync
 
 =head1 VERSION
 
-version 0.12
+version 0.13
 
 =head1 SYNOPSIS
 
@@ -506,10 +506,14 @@ TARGET/hist3.<timestamp85> comes along.
 
 None of the functions are exported by default, but they are exportable.
 
-=head2 backup(%args) -> RESP
+=head2 backup(%args) -> [STATUSCODE, ERRMSG, RESULT]
 
 
 Backup files/directories with histories, using rsync.
+
+Returns a 3-element arrayref. STATUSCODE is 200 on success, or an error code
+between 3xx-5xx (just like in HTTP). ERRMSG is a string containing error
+message, RESULT is the actual result.
 
 Arguments (C<*> denotes required arguments):
 
