@@ -1,6 +1,6 @@
 package File::RsyBak;
 BEGIN {
-  $File::RsyBak::VERSION = '0.13';
+  $File::RsyBak::VERSION = '0.14';
 }
 # ABSTRACT: Backup files/directories with histories, using rsync
 
@@ -158,6 +158,14 @@ histories ([-7, 4, 3]).
 _
         },
     ],
+
+    deps => {
+        all => [
+            {exec=>'nice'},
+            {exec=>'rsync'}, # XXX not needed if backup=0
+            {exec=>'rm'},    # XXX not needed if rotate=0
+        ],
+    },
 };
 sub backup {
     my %args = @_;
@@ -349,7 +357,7 @@ File::RsyBak - Backup files/directories with histories, using rsync
 
 =head1 VERSION
 
-version 0.13
+version 0.14
 
 =head1 SYNOPSIS
 

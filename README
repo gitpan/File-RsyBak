@@ -2,7 +2,7 @@ NAME
     File::RsyBak - Backup files/directories with histories, using rsync
 
 VERSION
-    version 0.13
+    version 0.14
 
 SYNOPSIS
     From your Perl program:

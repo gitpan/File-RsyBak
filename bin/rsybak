@@ -3,7 +3,7 @@
 # workaround for dzil
 package rsybak;
 BEGIN {
-  $rsybak::VERSION = '0.13';
+  $rsybak::VERSION = '0.14';
 }
 # ABSTRACT: Backup files/directories with histories, using rsync
 
@@ -32,7 +32,7 @@ rsybak - Backup files/directories with histories, using rsync
 
 =head1 VERSION
 
-version 0.13
+version 0.14
 
 =head1 DESCRIPTION
 

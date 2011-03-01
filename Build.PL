@@ -17,7 +17,7 @@ my %module_build_args = (
     'Steven Haryanto <stevenharyanto@gmail.com>'
   ],
   'dist_name' => 'File-RsyBak',
-  'dist_version' => '0.13',
+  'dist_version' => '0.14',
   'license' => 'perl',
   'module_name' => 'File::RsyBak',
   'recommends' => {},
@@ -31,7 +31,7 @@ my %module_build_args = (
     'Log::Any' => '0',
     'Log::Any::App' => '0',
     'String::ShellQuote' => '0',
-    'Sub::Spec::CmdLine' => '0.22',
+    'Sub::Spec::CmdLine' => '0.25',
     'Taint::Util' => '0',
     'perl' => '5.010000'
   },
