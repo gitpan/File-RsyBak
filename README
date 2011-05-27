@@ -2,7 +2,7 @@ NAME
     File::RsyBak - Backup files/directories with histories, using rsync
 
 VERSION
-    version 0.14
+    version 0.15
 
 SYNOPSIS
     From your Perl program:
@@ -153,11 +153,11 @@ HOW IT WORKS
 FUNCTIONS
     None of the functions are exported by default, but they are exportable.
 
-  backup(%args) -> [STATUSCODE, ERRMSG, RESULT]
+  backup(%args) -> [STATUS_CODE, ERR_MSG, RESULT]
     Backup files/directories with histories, using rsync.
 
-    Returns a 3-element arrayref. STATUSCODE is 200 on success, or an error
-    code between 3xx-5xx (just like in HTTP). ERRMSG is a string containing
+    Returns a 3-element arrayref. STATUS_CODE is 200 on success, or an error
+    code between 3xx-5xx (just like in HTTP). ERR_MSG is a string containing
     error message, RESULT is the actual result.
 
     Arguments ("*" denotes required arguments):
@@ -223,7 +223,7 @@ HISTORY
     server with hundreds of accounts with millions of files, backup process
     often took 12 hours or more. After evaluating several other solutions,
     we realized that nothing beats the raw performance of rsync. Thus we
-    designed a simple backup system based on them.
+    designed a simple backup system based on it.
 
     First public release of this module is in Feb 2011.
 

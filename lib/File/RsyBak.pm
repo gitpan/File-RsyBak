@@ -1,6 +1,6 @@
 package File::RsyBak;
 BEGIN {
-  $File::RsyBak::VERSION = '0.14';
+  $File::RsyBak::VERSION = '0.15';
 }
 # ABSTRACT: Backup files/directories with histories, using rsync
 
@@ -246,12 +246,11 @@ sub _backup {
     # but continue anyway, half backups are better than nothing
 
     if (-e "$target->{abs_path}/current") {
-        $log->debug("touch $target->{abs_path}/.current.timestamp ...");
-        system "touch $target->{abs_path}/.current.timestamp";
-        my @st     = stat(".current.timestamp");
+        my $tspath = "$target->{abs_path}/.current.timestamp";
+        my @st     = stat($tspath);
         my $tstamp = POSIX::strftime(
             "%Y-%m-%d\@%H:%M:%S+00",
-            gmtime( $st[9] || time() ));
+            gmtime( $st[9] || time() )); # timestamp might not exist yet
         $log->debug("rename $target->{abs_path}/current ==> ".
                         "hist.$tstamp ...");
         unless (rename "$target->{abs_path}/current",
@@ -259,6 +258,8 @@ sub _backup {
             $log->warn("Failed renaming $target->{abs_path}/current ==> ".
                          "hist.$tstamp: $!");
         }
+        $log->debug("touch $tspath ...");
+        system "touch ".shell_quote($tspath);
     }
 
     $log->debug("rename $target->{abs_path}/.tmp ==> current ...");
@@ -357,7 +358,7 @@ File::RsyBak - Backup files/directories with histories, using rsync
 
 =head1 VERSION
 
-version 0.14
+version 0.15
 
 =head1 SYNOPSIS
 
@@ -514,13 +515,13 @@ TARGET/hist3.<timestamp85> comes along.
 
 None of the functions are exported by default, but they are exportable.
 
-=head2 backup(%args) -> [STATUSCODE, ERRMSG, RESULT]
+=head2 backup(%args) -> [STATUS_CODE, ERR_MSG, RESULT]
 
 
 Backup files/directories with histories, using rsync.
 
-Returns a 3-element arrayref. STATUSCODE is 200 on success, or an error code
-between 3xx-5xx (just like in HTTP). ERRMSG is a string containing error
+Returns a 3-element arrayref. STATUS_CODE is 200 on success, or an error code
+between 3xx-5xx (just like in HTTP). ERR_MSG is a string containing error
 message, RESULT is the actual result.
 
 Arguments (C<*> denotes required arguments):
@@ -588,7 +589,7 @@ exit on many kinds of non-fatal errors instead of ignoring the errors and
 continuning backup. It was also very slow: on a server with hundreds of accounts
 with millions of files, backup process often took 12 hours or more. After
 evaluating several other solutions, we realized that nothing beats the raw
-performance of rsync. Thus we designed a simple backup system based on them.
+performance of rsync. Thus we designed a simple backup system based on it.
 
 First public release of this module is in Feb 2011.
 
