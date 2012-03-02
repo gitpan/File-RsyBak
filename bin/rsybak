@@ -2,28 +2,24 @@
 
 # workaround for dzil
 package rsybak;
-BEGIN {
-  $rsybak::VERSION = '0.15';
+{
+  $rsybak::VERSION = '0.16';
 }
-# ABSTRACT: Backup files/directories with histories, using rsync
 
 use 5.010;
 use strict;
 use warnings;
-BEGIN {
-    # reduce startup overhead if being invoked for bash completion
-    unless ($ENV{COMP_LINE}) {
-        require Log::Any::App;
-        # older Log::Any::App (< 0.26) which croaks when import() is not called
-        Log::Any::App->import();
-    }
-}
+use Perinci::CmdLine;
 
-use Sub::Spec::CmdLine qw(run);
-run(module => 'File::RsyBak', sub => 'backup');
+# VERSION
+
+Perinci::CmdLine->new(url => '/File/RsyBak/backup')->run;
+
+1;
+# ABSTRACT: Backup files/directories with histories, using rsync
 
 
-
+__END__
 =pod
 
 =head1 NAME
@@ -32,7 +28,7 @@ rsybak - Backup files/directories with histories, using rsync
 
 =head1 VERSION
 
-version 0.15
+version 0.16
 
 =head1 DESCRIPTION
 
@@ -67,13 +63,10 @@ Steven Haryanto <stevenharyanto@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2011 by Steven Haryanto.
+This software is copyright (c) 2012 by Steven Haryanto.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
-
-__END__
 

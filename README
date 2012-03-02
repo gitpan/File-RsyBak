@@ -2,7 +2,7 @@ NAME
     File::RsyBak - Backup files/directories with histories, using rsync
 
 VERSION
-    version 0.15
+    version 0.16
 
 SYNOPSIS
     From your Perl program:
@@ -153,66 +153,6 @@ HOW IT WORKS
 FUNCTIONS
     None of the functions are exported by default, but they are exportable.
 
-  backup(%args) -> [STATUS_CODE, ERR_MSG, RESULT]
-    Backup files/directories with histories, using rsync.
-
-    Returns a 3-element arrayref. STATUS_CODE is 200 on success, or an error
-    code between 3xx-5xx (just like in HTTP). ERR_MSG is a string containing
-    error message, RESULT is the actual result.
-
-    Arguments ("*" denotes required arguments):
-
-    *   source* => *array|str*
-
-        Director(y|ies) to backup.
-
-    *   target* => *str*
-
-        Backup destination.
-
-    *   backup => *bool* (default 1)
-
-        Whether to do backup or not.
-
-        If backup=1 and rotate=0 then will only create new backup without
-        rotating histories.
-
-    *   extra_dir => *bool*
-
-        Whether to force creation of source directory in target.
-
-        If set to 1, then backup(source => '/a', target => '/backup/a') will
-        create another 'a' directory in target, i.e. /backup/a/current/a.
-        Otherwise, contents of a/ will be directly copied under
-        /backup/a/current/.
-
-        Will always be set to 1 if source is more than one, but default to 0
-        if source is a single directory. You can set this to 1 to so that
-        behaviour when there is a single source is the same as behaviour
-        when there are several sources.
-
-    *   extra_rsync_opts => *array*
-
-        Pass extra options to rsync command.
-
-        Extra options to pass to rsync command when doing backup. Note that
-        the options will be shell quoted, , so you should pass it unquoted,
-        e.g. ['--exclude', '/Program Files'].
-
-    *   histories => *array* (default "[-7, 4, 3]")
-
-        Histories/history levels.
-
-        Specifies number of backup histories to keep for level 1, 2, and so
-        on. If number is negative, specifies number of days to keep instead
-        (regardless of number of histories).
-
-    *   rotate => *bool* (default 1)
-
-        Whether to do rotate after backup or not.
-
-        If backup=0 and rotate=1 then will only do history rotating.
-
 HISTORY
     The idea for this module came out in 2006 as part of the Spanel hosting
     control panel project. We need a daily backup system for shared hosting
@@ -275,7 +215,7 @@ AUTHOR
     Steven Haryanto <stevenharyanto@gmail.com>
 
 COPYRIGHT AND LICENSE
-    This software is copyright (c) 2011 by Steven Haryanto.
+    This software is copyright (c) 2012 by Steven Haryanto.
 
     This is free software; you can redistribute it and/or modify it under
     the same terms as the Perl 5 programming language system itself.
