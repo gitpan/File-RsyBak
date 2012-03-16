@@ -1,6 +1,6 @@
 package File::RsyBak;
 {
-  $File::RsyBak::VERSION = '0.17';
+  $File::RsyBak::VERSION = '0.18';
 }
 
 use 5.010;
@@ -367,7 +367,7 @@ File::RsyBak - Backup files/directories with histories, using rsync
 
 =head1 VERSION
 
-version 0.17
+version 0.18
 
 =head1 SYNOPSIS
 
@@ -520,10 +520,6 @@ histories too will accumulate:
 Finally, TARGET/hist3.<timestamp1> will be deleted after
 TARGET/hist3.<timestamp85> comes along.
 
-=head1 FUNCTIONS
-
-None of the functions are exported by default, but they are exportable.
-
 =head1 HISTORY
 
 The idea for this module came out in 2006 as part of the Spanel hosting control
@@ -590,6 +586,72 @@ L<File::Rotate::Backup>
 L<Snapback2>, which is a backup system using the same basic principle (rsync
 snapshots), created in as early as 2004 (or earlier) by Mike Heins. Do check it
 out. I wish I had found it first before reinventing it in 2006 :-)
+
+=head1 FUNCTIONS
+
+
+=head2 backup(%args) -> [status, msg, result, meta]
+
+Backup files/directories with histories, using rsync.
+
+Arguments ('*' denotes required arguments):
+
+=over 4
+
+=item * B<backup> => I<bool> (default: 1)
+
+Whether to do backup or not.
+
+If backup=1 and rotate=0 then will only create new backup without rotating
+histories.
+
+=item * B<extra_dir> => I<bool>
+
+Whether to force creation of source directory in target.
+
+If set to 1, then backup(source => '/a', target => '/backup/a') will create
+another 'a' directory in target, i.e. /backup/a/current/a. Otherwise, contents
+of a/ will be directly copied under /backup/a/current/.
+
+Will always be set to 1 if source is more than one, but default to 0 if source
+is a single directory. You can set this to 1 to so that behaviour when there is
+a single source is the same as behaviour when there are several sources.
+
+=item * B<extra_rsync_opts> => I<array>
+
+Pass extra options to rsync command.
+
+Extra options to pass to rsync command when doing backup. Note that the options
+will be shell quoted, , so you should pass it unquoted, e.g. ['--exclude',
+'/Program Files'].
+
+=item * B<histories> => I<array> (default: [-7, 4, 3])
+
+Histories/history levels.
+
+Specifies number of backup histories to keep for level 1, 2, and so on. If
+number is negative, specifies number of days to keep instead (regardless of
+number of histories).
+
+=item * B<rotate> => I<bool> (default: 1)
+
+Whether to do rotate after backup or not.
+
+If backup=0 and rotate=1 then will only do history rotating.
+
+=item * B<source>* => I<array|str>
+
+Director(y|ies) to backup.
+
+=item * B<target>* => I<str>
+
+Backup destination.
+
+=back
+
+Return value:
+
+Returns an enveloped result (an array). First element (status) is an integer containing HTTP status code (200 means OK, 4xx caller error, 5xx function error). Second element (msg) is a string containing error message, or 'OK' if status is 200. Third element (result) is optional, the actual result. Fourth element (meta) is called result metadata and is optional, a hash that contains extra information.
 
 =head1 AUTHOR
 

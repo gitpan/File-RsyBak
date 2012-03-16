@@ -17,7 +17,7 @@ my %module_build_args = (
     "Steven Haryanto <stevenharyanto\@gmail.com>"
   ],
   "dist_name" => "File-RsyBak",
-  "dist_version" => "0.17",
+  "dist_version" => "0.18",
   "license" => "perl",
   "module_name" => "File::RsyBak",
   "recommends" => {},
