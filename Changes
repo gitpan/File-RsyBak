@@ -1,25 +1,32 @@
 Revision history for File-RsyBak
 
-0.18    2012-03-16
+0.19    2013-11-07 (SHARYANTO)
 
-        No functional changes. Rebuild with Pod::Weaver::Plugin::Perinci
-        enabled.
-
-
-0.17    2012-03-03
-
-        No functional changes. Reduce startup overhead by delaying loading of
-        modules (measured on my Atom N570 netbook: from 0.15s to 0.06s). This is
-        not important actually, I'm just testing Perinci::CmdLine and
-        Perinci::BashComplete on this module.
+        - No functional changes. Show sample backup directory structure in
+          Synopsis.
 
 
-0.16    2012-03-02
+0.18    2012-03-16 (SHARYANTO)
 
-        No functional changes. Replace Sub::Spec::CmdLine with Perinci::CmdLine.
+        - No functional changes. Rebuild with Pod::Weaver::Plugin::Perinci
+          enabled.
 
 
-0.15    2011-05-27
+0.17    2012-03-03 (SHARYANTO)
+
+        - No functional changes. Reduce startup overhead by delaying loading of
+          modules (measured on my Atom N570 netbook: from 0.15s to 0.06s). This
+          is not important actually, I'm just testing Perinci::CmdLine and
+          Perinci::BashComplete on this module.
+
+
+0.16    2012-03-02 (SHARYANTO)
+
+        - No functional changes. Replace Sub::Spec::CmdLine with
+          Perinci::CmdLine.
+
+
+0.15    2011-05-27 (SHARYANTO)
 
         [BUG FIXES]
 
@@ -27,83 +34,83 @@ Revision history for File-RsyBak
           history backup dir name, it should be after.
 
 
-0.14    2011-02-28
+0.14    2011-02-28 (SHARYANTO)
 
-        Spec: add 'deps' clause to nice/rsync/rm execs.
+        - Spec: add 'deps' clause to nice/rsync/rm execs.
 
-        Require newer version of Sub::Spec::CmdLine.
-
-
-0.13    2011-02-22
-
-        Update to latest Sub::Spec (%SUBS -> %SPEC).
+        - Require newer version of Sub::Spec::CmdLine.
 
 
-0.12    2011-02-16
+0.13    2011-02-22 (SHARYANTO)
 
-        Reduce startup overhead (avoid loading Log::Any::App) when invoked for
-        bash completion.
-
-
-0.11    2011-02-15
-
-        Fix tests.
+        - Update to latest Sub::Spec (%SUBS -> %SPEC).
 
 
-0.10    2011-02-15
+0.12    2011-02-16 (SHARYANTO)
 
-        Do not die in backup(), return error response instead.
-
-
-0.09    2011-02-15
-
-        Fix sub spec (--histories is optional).
+        - Reduce startup overhead (avoid loading Log::Any::App) when invoked for
+          bash completion.
 
 
-0.08    2011-02-15
+0.11    2011-02-15 (SHARYANTO)
 
-        Rename from File-CRBackup -> File-RsyBak.
-
-        Remove the use of "cp -la" and use "rsync --link-dest" instead.
-
-        Allow remote sources.
+        - Fix tests.
 
 
-0.07    2011-02-11
+0.10    2011-02-15 (SHARYANTO)
 
-        Fix POD.
-
-
-0.06    2011-02-10
-
-        Add POD documentation for functions (using
-        Pod::Weaver::Plugin::SubSpec).
+        - Do not die in backup(), return error response instead.
 
 
-0.05    2011-02-09
+0.09    2011-02-15 (SHARYANTO)
 
-        Add missing dependencies for script 'crbackup'.
-
-
-0.04    2011-02-09
-
-        Some small fixes and update to newer version of Sub::Spec::CmdLine.
+        - Fix sub spec (--histories is optional).
 
 
-0.03    2011-02-09
+0.08    2011-02-15 (SHARYANTO)
 
-        Add script: crbackup.
+        - Rename from File-CRBackup -> File-RsyBak.
 
-        Add more documentation.
+        - Remove the use of "cp -la" and use "rsync --link-dest" instead.
 
-        Fix missing dependencies/use statements.
-
-
-0.02    2011-02-05
-
-        Add arguments: extra_cp_opts, extra_rsync_opts
+        - Allow remote sources.
 
 
-0.01    2011-02-04
+0.07    2011-02-11 (SHARYANTO)
 
-        First release.
+        - Fix POD.
+
+
+0.06    2011-02-10 (SHARYANTO)
+
+        - Add POD documentation for functions (using
+          Pod::Weaver::Plugin::SubSpec).
+
+
+0.05    2011-02-09 (SHARYANTO)
+
+        - Add missing dependencies for script 'crbackup'.
+
+
+0.04    2011-02-09 (SHARYANTO)
+
+        - Some small fixes and update to newer version of Sub::Spec::CmdLine.
+
+
+0.03    2011-02-09 (SHARYANTO)
+
+        - Add script: crbackup.
+
+        - Add more documentation.
+
+        - Fix missing dependencies/use statements.
+
+
+0.02    2011-02-05 (SHARYANTO)
+
+        - Add arguments: extra_cp_opts, extra_rsync_opts
+
+
+0.01    2011-02-04 (SHARYANTO)
+
+        - First release.

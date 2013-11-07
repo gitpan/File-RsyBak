@@ -1,9 +1,6 @@
 package File::RsyBak;
-{
-  $File::RsyBak::VERSION = '0.18';
-}
 
-use 5.010;
+use 5.010001;
 use strict;
 use warnings;
 use Log::Any '$log';
@@ -14,7 +11,7 @@ require Exporter;
 our @ISA       = qw(Exporter);
 our @EXPORT_OK = qw(backup);
 
-# VERSION
+our $VERSION = '0.19'; # VERSION
 
 our %SPEC;
 
@@ -145,7 +142,8 @@ _
     examples => [
         {
             argv         => ['/home/steven/mydata','/backup/steven/mydata'],
-            description => <<'_',
+            test         => 0,
+            description  => <<'_',
 
 Backup /home/steven/mydata to /backup/steven/mydata using the default number of
 histories ([-7, 4, 3]).
@@ -156,9 +154,9 @@ _
 
     deps => {
         all => [
-            {exec=>'nice'},
-            {exec=>'rsync'}, # XXX not needed if backup=0
-            {exec=>'rm'},    # XXX not needed if rotate=0
+            {prog => 'nice'},
+            {prog => 'rsync'}, # XXX not needed if backup=0
+            {prog => 'rm'},    # XXX not needed if rotate=0
         ],
     },
 };
@@ -356,10 +354,11 @@ sub _rotate {
 1;
 # ABSTRACT: Backup files/directories with histories, using rsync
 
-
-
 __END__
+
 =pod
+
+=encoding utf-8
 
 =head1 NAME
 
@@ -367,7 +366,7 @@ File::RsyBak - Backup files/directories with histories, using rsync
 
 =head1 VERSION
 
-version 0.18
+version 0.19
 
 =head1 SYNOPSIS
 
@@ -383,6 +382,49 @@ From your Perl program:
 Or, just use the provided script from the command-line:
 
  % rsybak --source /path/to/mydata --target /backup/mydata
+
+Example resulting backup (after several runs so that backup history has
+accumulated):
+
+ % ls /path/to/mydata
+ myfile
+ anotherfile
+ mydir/
+
+ % ls -l /backup/mydata
+ current/
+ hist.2013-10-31@12:04:17+00/
+ hist.2013-11-01@12:09:31+00/
+ hist.2013-11-02@12:09:41+00t/
+ hist.2013-11-03@12:15:02+00/
+ hist.2013-11-04@12:13:19+00/
+ hist.2013-11-05@12:11:31+00/
+ hist2.2013-10-08@12:07:50+00/
+ hist2.2013-10-15@12:06:03+00/
+ hist2.2013-10-21@12:02:42+00/
+ hist2.2013-10-27@12:06:25+00t/
+ hist3.2013-06-25@12:15:39+00/
+ hist3.2013-08-31@12:05:31+00/
+ hist3.2013-10-02@12:05:57+00/
+
+Each directory under C</backup/mydata> is a "snapshot" backup of
+C</path/to/mydata>:
+
+ % ls -l /backup/mydata/current/
+ myfile
+ anotherfile
+ mydir/
+
+ % ls -l /backup/mydata/hist.2013-10-31@12:04:17+00/
+ myfile
+ anotherfile
+ mydir/
+
+ % ls -l /backup/mydata/hist3.2013-10-02@12:05:57+00/
+ myfile
+ anotherfile
+ mydir/
+ someoldfile
 
 =head1 DESCRIPTION
 
@@ -426,6 +468,72 @@ on those platforms.
 =back
 
 This module uses Log::Any logging framework.
+
+=head1 FUNCTIONS
+
+
+None are exported by default, but they are exportable.
+
+=head2 backup(%args) -> [status, msg, result, meta]
+
+Arguments ('*' denotes required arguments):
+
+=over 4
+
+=item * B<backup> => I<bool> (default: 1)
+
+Whether to do backup or not.
+
+If backup=1 and rotate=0 then will only create new backup without rotating
+histories.
+
+=item * B<extra_dir> => I<bool>
+
+Whether to force creation of source directory in target.
+
+If set to 1, then backup(source => '/a', target => '/backup/a') will create
+another 'a' directory in target, i.e. /backup/a/current/a. Otherwise, contents
+of a/ will be directly copied under /backup/a/current/.
+
+Will always be set to 1 if source is more than one, but default to 0 if source
+is a single directory. You can set this to 1 to so that behaviour when there is
+a single source is the same as behaviour when there are several sources.
+
+=item * B<extra_rsync_opts> => I<array>
+
+Pass extra options to rsync command.
+
+Extra options to pass to rsync command when doing backup. Note that the options
+will be shell quoted, , so you should pass it unquoted, e.g. ['--exclude',
+'/Program Files'].
+
+=item * B<histories> => I<array> (default: [-7, 4, 3])
+
+Histories/history levels.
+
+Specifies number of backup histories to keep for level 1, 2, and so on. If
+number is negative, specifies number of days to keep instead (regardless of
+number of histories).
+
+=item * B<rotate> => I<bool> (default: 1)
+
+Whether to do rotate after backup or not.
+
+If backup=0 and rotate=1 then will only do history rotating.
+
+=item * B<source> => I<array|str>
+
+Director(y|ies) to backup.
+
+=item * B<target> => I<str>
+
+Backup destination.
+
+=back
+
+Return value:
+
+Returns an enveloped result (an array). First element (status) is an integer containing HTTP status code (200 means OK, 4xx caller error, 5xx function error). Second element (msg) is a string containing error message, or 'OK' if status is 200. Third element (result) is optional, the actual result. Fourth element (meta) is called result metadata and is optional, a hash that contains extra information.
 
 =head1 HOW IT WORKS
 
@@ -532,7 +640,8 @@ with millions of files, backup process often took 12 hours or more. After
 evaluating several other solutions, we realized that nothing beats the raw
 performance of rsync. Thus we designed a simple backup system based on it.
 
-First public release of this module is in Feb 2011.
+First public release of this module is in Feb 2011. I have since used this
+script in various production servers as well as personal PCs/laptops.
 
 =head1 FAQ
 
@@ -587,71 +696,22 @@ L<Snapback2>, which is a backup system using the same basic principle (rsync
 snapshots), created in as early as 2004 (or earlier) by Mike Heins. Do check it
 out. I wish I had found it first before reinventing it in 2006 :-)
 
-=head1 FUNCTIONS
+=head1 HOMEPAGE
 
+Please visit the project's homepage at L<https://metacpan.org/release/File-RsyBak>.
 
-=head2 backup(%args) -> [status, msg, result, meta]
+=head1 SOURCE
 
-Backup files/directories with histories, using rsync.
+Source repository is at L<HASH(0x3e13068)>.
 
-Arguments ('*' denotes required arguments):
+=head1 BUGS
 
-=over 4
+Please report any bugs or feature requests on the bugtracker website
+https://rt.cpan.org/Public/Dist/Display.html?Name=File-RsyBak
 
-=item * B<backup> => I<bool> (default: 1)
-
-Whether to do backup or not.
-
-If backup=1 and rotate=0 then will only create new backup without rotating
-histories.
-
-=item * B<extra_dir> => I<bool>
-
-Whether to force creation of source directory in target.
-
-If set to 1, then backup(source => '/a', target => '/backup/a') will create
-another 'a' directory in target, i.e. /backup/a/current/a. Otherwise, contents
-of a/ will be directly copied under /backup/a/current/.
-
-Will always be set to 1 if source is more than one, but default to 0 if source
-is a single directory. You can set this to 1 to so that behaviour when there is
-a single source is the same as behaviour when there are several sources.
-
-=item * B<extra_rsync_opts> => I<array>
-
-Pass extra options to rsync command.
-
-Extra options to pass to rsync command when doing backup. Note that the options
-will be shell quoted, , so you should pass it unquoted, e.g. ['--exclude',
-'/Program Files'].
-
-=item * B<histories> => I<array> (default: [-7, 4, 3])
-
-Histories/history levels.
-
-Specifies number of backup histories to keep for level 1, 2, and so on. If
-number is negative, specifies number of days to keep instead (regardless of
-number of histories).
-
-=item * B<rotate> => I<bool> (default: 1)
-
-Whether to do rotate after backup or not.
-
-If backup=0 and rotate=1 then will only do history rotating.
-
-=item * B<source>* => I<array|str>
-
-Director(y|ies) to backup.
-
-=item * B<target>* => I<str>
-
-Backup destination.
-
-=back
-
-Return value:
-
-Returns an enveloped result (an array). First element (status) is an integer containing HTTP status code (200 means OK, 4xx caller error, 5xx function error). Second element (msg) is a string containing error message, or 'OK' if status is 200. Third element (result) is optional, the actual result. Fourth element (meta) is called result metadata and is optional, a hash that contains extra information.
+When submitting a bug or request, please include a test-file or a
+patch to an existing test-file that illustrates the bug or desired
+feature.
 
 =head1 AUTHOR
 
@@ -659,10 +719,9 @@ Steven Haryanto <stevenharyanto@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2012 by Steven Haryanto.
+This software is copyright (c) 2013 by Steven Haryanto.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-

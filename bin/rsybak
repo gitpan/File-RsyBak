@@ -1,26 +1,23 @@
 #!/usr/bin/perl
 
-# workaround for dzil
-package rsybak;
-{
-  $rsybak::VERSION = '0.18';
-}
-
 use 5.010;
 use strict;
 use warnings;
 use Perinci::CmdLine;
 
-# VERSION
+our $VERSION = '0.19'; # VERSION
 
 Perinci::CmdLine->new(url => '/File/RsyBak/backup')->run;
 
 1;
 # ABSTRACT: Backup files/directories with histories, using rsync
-
+# PODNAME: rsybak
 
 __END__
+
 =pod
+
+=encoding utf-8
 
 =head1 NAME
 
@@ -28,7 +25,7 @@ rsybak - Backup files/directories with histories, using rsync
 
 =head1 VERSION
 
-version 0.18
+version 0.19
 
 =head1 DESCRIPTION
 
@@ -57,16 +54,32 @@ See the documentation for Log::Any::App for more details.
 
 L<File::RsyBak>
 
+=head1 HOMEPAGE
+
+Please visit the project's homepage at L<https://metacpan.org/release/File-RsyBak>.
+
+=head1 SOURCE
+
+Source repository is at L<HASH(0x3e13068)>.
+
+=head1 BUGS
+
+Please report any bugs or feature requests on the bugtracker website
+https://rt.cpan.org/Public/Dist/Display.html?Name=File-RsyBak
+
+When submitting a bug or request, please include a test-file or a
+patch to an existing test-file that illustrates the bug or desired
+feature.
+
 =head1 AUTHOR
 
 Steven Haryanto <stevenharyanto@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2012 by Steven Haryanto.
+This software is copyright (c) 2013 by Steven Haryanto.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
 
 =cut
-
