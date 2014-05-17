@@ -11,7 +11,7 @@ require Exporter;
 our @ISA       = qw(Exporter);
 our @EXPORT_OK = qw(backup);
 
-our $VERSION = '0.19'; # VERSION
+our $VERSION = '0.20'; # VERSION
 
 our %SPEC;
 
@@ -68,22 +68,30 @@ sub _check_sources {
 }
 
 $SPEC{backup} = {
+    v             => 1.1,
     summary       =>
         'Backup files/directories with histories, using rsync',
     args          => {
-        source           => ['any*'   => {
-            of           => ['str*', ['array*' => {of=>'str*'}]],
+        source           => {
             summary      => 'Director(y|ies) to backup',
-            arg_pos      => 0,
-        }],
-        target           => ['str*'   => {
+            schema       => ['any*'   => {
+                of => ['str*', ['array*' => {of=>'str*'}]]
+            }],
+            req          => 1,
+            pos          => 0,
+        },
+        target           => {
             summary      => 'Backup destination',
-            arg_pos      => 1,
-        }],
-        histories        => ['array' => {
-            of           => 'int*',
-            default      => [-7, 4, 3],
+            schema       => ['str*'   => {}],
+            req          => 1,
+            pos          => 1,
+        },
+        histories        => {
             summary      => 'Histories/history levels',
+            schema       => ['array' => {
+                default      => [-7, 4, 3],
+                of           => 'int*',
+            }],
             description  => <<'_',
 
 Specifies number of backup histories to keep for level 1, 2, and so on. If
@@ -91,10 +99,11 @@ number is negative, specifies number of days to keep instead (regardless of
 number of histories).
 
 _
-        }],
-        extra_dir        => ['bool'   => {
+        },
+        extra_dir        => {
             summary      =>
                 'Whether to force creation of source directory in target',
+            schema       => ['bool'   => {}],
             description  => <<'_',
 
 If set to 1, then backup(source => '/a', target => '/backup/a') will create
@@ -106,29 +115,35 @@ is a single directory. You can set this to 1 to so that behaviour when there is
 a single source is the same as behaviour when there are several sources.
 
 _
-        }],
-        backup           => [bool     => {
-            default      => 1,
+        },
+        backup           => {
             summary      => 'Whether to do backup or not',
+            schema       => [bool     => {
+                default      => 1,
+            }],
             description  => <<'_',
 
 If backup=1 and rotate=0 then will only create new backup without rotating
 histories.
 
 _
-        }],
-        rotate           => [bool     => {
-            default      => 1,
+        },
+        rotate           => {
             summary      => 'Whether to do rotate after backup or not',
+            schema       => [bool     => {
+                default      => 1,
+            }],
             description  => <<'_',
 
 If backup=0 and rotate=1 then will only do history rotating.
 
 _
-        }],
-        extra_rsync_opts => [array    => {
-            of           => 'str*',
+        },
+        extra_rsync_opts => {
             summary      => 'Pass extra options to rsync command',
+            schema       => [array    => {
+                of           => 'str*',
+            }],
             description  => <<'_',
 
 Extra options to pass to rsync command when doing backup. Note that the options
@@ -136,7 +151,7 @@ will be shell quoted, , so you should pass it unquoted, e.g. ['--exclude',
 '/Program Files'].
 
 _
-        }],
+        },
     },
 
     examples => [
@@ -272,7 +287,6 @@ sub _backup {
     $log->infof("Finished backup %s ==> %s", $sources, $target);
 }
 
-
 sub _rotate {
     require String::ShellQuote; String::ShellQuote->import;
     require Time::Local;
@@ -358,7 +372,7 @@ __END__
 
 =pod
 
-=encoding utf-8
+=encoding UTF-8
 
 =head1 NAME
 
@@ -366,7 +380,7 @@ File::RsyBak - Backup files/directories with histories, using rsync
 
 =head1 VERSION
 
-version 0.19
+This document describes version 0.20 of File::RsyBak (from Perl distribution File-RsyBak), released on 2014-05-17.
 
 =head1 SYNOPSIS
 
@@ -386,12 +400,12 @@ Or, just use the provided script from the command-line:
 Example resulting backup (after several runs so that backup history has
 accumulated):
 
- % ls /path/to/mydata
+ % ls /path/to/mydata/
  myfile
  anotherfile
  mydir/
 
- % ls -l /backup/mydata
+ % ls /backup/mydata/
  current/
  hist.2013-10-31@12:04:17+00/
  hist.2013-11-01@12:09:31+00/
@@ -410,17 +424,17 @@ accumulated):
 Each directory under C</backup/mydata> is a "snapshot" backup of
 C</path/to/mydata>:
 
- % ls -l /backup/mydata/current/
+ % ls /backup/mydata/current/
  myfile
  anotherfile
  mydir/
 
- % ls -l /backup/mydata/hist.2013-10-31@12:04:17+00/
+ % ls /backup/mydata/hist.2013-10-31@12:04:17+00/
  myfile
  anotherfile
  mydir/
 
- % ls -l /backup/mydata/hist3.2013-10-02@12:05:57+00/
+ % ls /backup/mydata/hist3.2013-10-02@12:05:57+00/
  myfile
  anotherfile
  mydir/
@@ -472,10 +486,13 @@ This module uses Log::Any logging framework.
 =head1 FUNCTIONS
 
 
-None are exported by default, but they are exportable.
-
 =head2 backup(%args) -> [status, msg, result, meta]
 
+Backup files/directories with histories, using rsync.
+
+Examples:
+
+ backup( source => "/home/steven/mydata", target => "/backup/steven/mydata");
 Arguments ('*' denotes required arguments):
 
 =over 4
@@ -521,11 +538,11 @@ Whether to do rotate after backup or not.
 
 If backup=0 and rotate=1 then will only do history rotating.
 
-=item * B<source> => I<array|str>
+=item * B<source>* => I<array|str>
 
 Director(y|ies) to backup.
 
-=item * B<target> => I<str>
+=item * B<target>* => I<str>
 
 Backup destination.
 
@@ -533,7 +550,14 @@ Backup destination.
 
 Return value:
 
-Returns an enveloped result (an array). First element (status) is an integer containing HTTP status code (200 means OK, 4xx caller error, 5xx function error). Second element (msg) is a string containing error message, or 'OK' if status is 200. Third element (result) is optional, the actual result. Fourth element (meta) is called result metadata and is optional, a hash that contains extra information.
+Returns an enveloped result (an array).
+
+First element (status) is an integer containing HTTP status code
+(200 means OK, 4xx caller error, 5xx function error). Second element
+(msg) is a string containing error message, or 'OK' if status is
+200. Third element (result) is optional, the actual result. Fourth
+element (meta) is called result metadata and is optional, a hash
+that contains extra information.
 
 =head1 HOW IT WORKS
 
@@ -702,12 +726,11 @@ Please visit the project's homepage at L<https://metacpan.org/release/File-RsyBa
 
 =head1 SOURCE
 
-Source repository is at L<HASH(0x3e13068)>.
+Source repository is at L<https://github.com/sharyanto/perl-File-RsyBak>.
 
 =head1 BUGS
 
-Please report any bugs or feature requests on the bugtracker website
-https://rt.cpan.org/Public/Dist/Display.html?Name=File-RsyBak
+Please report any bugs or feature requests on the bugtracker website L<https://rt.cpan.org/Public/Dist/Display.html?Name=File-RsyBak>
 
 When submitting a bug or request, please include a test-file or a
 patch to an existing test-file that illustrates the bug or desired
@@ -719,7 +742,7 @@ Steven Haryanto <stevenharyanto@gmail.com>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2013 by Steven Haryanto.
+This software is copyright (c) 2014 by Steven Haryanto.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

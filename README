@@ -2,7 +2,8 @@ NAME
     File::RsyBak - Backup files/directories with histories, using rsync
 
 VERSION
-    version 0.19
+    This document describes version 0.20 of File::RsyBak (from Perl
+    distribution File-RsyBak), released on 2014-05-17.
 
 SYNOPSIS
     From your Perl program:
@@ -21,12 +22,12 @@ SYNOPSIS
     Example resulting backup (after several runs so that backup history has
     accumulated):
 
-     % ls /path/to/mydata
+     % ls /path/to/mydata/
      myfile
      anotherfile
      mydir/
 
-     % ls -l /backup/mydata
+     % ls /backup/mydata/
      current/
      hist.2013-10-31@12:04:17+00/
      hist.2013-11-01@12:09:31+00/
@@ -45,17 +46,17 @@ SYNOPSIS
     Each directory under "/backup/mydata" is a "snapshot" backup of
     "/path/to/mydata":
 
-     % ls -l /backup/mydata/current/
+     % ls /backup/mydata/current/
      myfile
      anotherfile
      mydir/
 
-     % ls -l /backup/mydata/hist.2013-10-31@12:04:17+00/
+     % ls /backup/mydata/hist.2013-10-31@12:04:17+00/
      myfile
      anotherfile
      mydir/
 
-     % ls -l /backup/mydata/hist3.2013-10-02@12:05:57+00/
+     % ls /backup/mydata/hist3.2013-10-02@12:05:57+00/
      myfile
      anotherfile
      mydir/
@@ -102,9 +103,12 @@ DESCRIPTION
     This module uses Log::Any logging framework.
 
 FUNCTIONS
-    None are exported by default, but they are exportable.
-
   backup(%args) -> [status, msg, result, meta]
+    Backup files/directories with histories, using rsync.
+
+    Examples:
+
+     backup( source => "/home/steven/mydata", target => "/backup/steven/mydata");
     Arguments ('*' denotes required arguments):
 
     *   backup => *bool* (default: 1)
@@ -150,22 +154,24 @@ FUNCTIONS
 
         If backup=0 and rotate=1 then will only do history rotating.
 
-    *   source => *array|str*
+    *   source* => *array|str*
 
         Director(y|ies) to backup.
 
-    *   target => *str*
+    *   target* => *str*
 
         Backup destination.
 
     Return value:
 
-    Returns an enveloped result (an array). First element (status) is an
-    integer containing HTTP status code (200 means OK, 4xx caller error, 5xx
-    function error). Second element (msg) is a string containing error
-    message, or 'OK' if status is 200. Third element (result) is optional,
-    the actual result. Fourth element (meta) is called result metadata and
-    is optional, a hash that contains extra information.
+    Returns an enveloped result (an array).
+
+    First element (status) is an integer containing HTTP status code (200
+    means OK, 4xx caller error, 5xx function error). Second element (msg) is
+    a string containing error message, or 'OK' if status is 200. Third
+    element (result) is optional, the actual result. Fourth element (meta)
+    is called result metadata and is optional, a hash that contains extra
+    information.
 
 HOW IT WORKS
   First-time backup
@@ -324,11 +330,11 @@ HOMEPAGE
     <https://metacpan.org/release/File-RsyBak>.
 
 SOURCE
-    Source repository is at HASH(0x3e13068).
+    Source repository is at <https://github.com/sharyanto/perl-File-RsyBak>.
 
 BUGS
     Please report any bugs or feature requests on the bugtracker website
-    https://rt.cpan.org/Public/Dist/Display.html?Name=File-RsyBak
+    <https://rt.cpan.org/Public/Dist/Display.html?Name=File-RsyBak>
 
     When submitting a bug or request, please include a test-file or a patch
     to an existing test-file that illustrates the bug or desired feature.
@@ -337,7 +343,7 @@ AUTHOR
     Steven Haryanto <stevenharyanto@gmail.com>
 
 COPYRIGHT AND LICENSE
-    This software is copyright (c) 2013 by Steven Haryanto.
+    This software is copyright (c) 2014 by Steven Haryanto.
 
     This is free software; you can redistribute it and/or modify it under
     the same terms as the Perl 5 programming language system itself.
