@@ -28,7 +28,7 @@ my %WriteMakefileArgs = (
     "File::Which" => 0,
     "File::chdir" => 0,
     "Log::Any" => 0,
-    "Perinci::CmdLine" => 0,
+    "Perinci::CmdLine" => "1.04",
     "Rinci" => "v1.1.40",
     "String::ShellQuote" => 0
   },
@@ -39,7 +39,7 @@ my %WriteMakefileArgs = (
     "IPC::Open3" => 0,
     "Test::More" => "0.96"
   },
-  "VERSION" => "0.20",
+  "VERSION" => "0.21",
   "test" => {
     "TESTS" => "t/*.t"
   }
@@ -56,7 +56,7 @@ my %FallbackPrereqs = (
   "IO::Handle" => 0,
   "IPC::Open3" => 0,
   "Log::Any" => 0,
-  "Perinci::CmdLine" => 0,
+  "Perinci::CmdLine" => "1.04",
   "Rinci" => "v1.1.40",
   "String::ShellQuote" => 0,
   "Test::More" => "0.96"

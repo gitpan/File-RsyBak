@@ -2,8 +2,8 @@ NAME
     File::RsyBak - Backup files/directories with histories, using rsync
 
 VERSION
-    This document describes version 0.20 of File::RsyBak (from Perl
-    distribution File-RsyBak), released on 2014-05-17.
+    This document describes version 0.21 of File::RsyBak (from Perl
+    distribution File-RsyBak), released on 2014-08-16.
 
 SYNOPSIS
     From your Perl program:
@@ -172,6 +172,8 @@ FUNCTIONS
     element (result) is optional, the actual result. Fourth element (meta)
     is called result metadata and is optional, a hash that contains extra
     information.
+
+     (any)
 
 HOW IT WORKS
   First-time backup

@@ -11,7 +11,7 @@ require Exporter;
 our @ISA       = qw(Exporter);
 our @EXPORT_OK = qw(backup);
 
-our $VERSION = '0.20'; # VERSION
+our $VERSION = '0.21'; # VERSION
 
 our %SPEC;
 
@@ -380,7 +380,7 @@ File::RsyBak - Backup files/directories with histories, using rsync
 
 =head1 VERSION
 
-This document describes version 0.20 of File::RsyBak (from Perl distribution File-RsyBak), released on 2014-05-17.
+This document describes version 0.21 of File::RsyBak (from Perl distribution File-RsyBak), released on 2014-08-16.
 
 =head1 SYNOPSIS
 
@@ -558,6 +558,8 @@ First element (status) is an integer containing HTTP status code
 200. Third element (result) is optional, the actual result. Fourth
 element (meta) is called result metadata and is optional, a hash
 that contains extra information.
+
+ (any)
 
 =head1 HOW IT WORKS
 
