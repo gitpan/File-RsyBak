@@ -3,8 +3,8 @@
 # Note: This script is a CLI interface to Riap function /File/RsyBak/backup
 # and generated automatically using Dist::Zilla::Plugin::Rinci::ScriptFromFunc version 0.01
 
-our $DATE = '2014-08-16'; # DATE
-our $VERSION = '0.21'; # VERSION
+our $DATE = '2014-09-05'; # DATE
+our $VERSION = '0.22'; # VERSION
 
 use 5.010001;
 use strict;
@@ -12,9 +12,7 @@ use warnings;
 
 use Perinci::CmdLine;
 
-Perinci::CmdLine->new(
-    url => "/File/RsyBak/backup",
-)->run;
+Perinci::CmdLine->new(url => "/File/RsyBak/backup")->run;
 
 # ABSTRACT: Backup files/directories with histories, using rsync
 # PODNAME: rsybak
@@ -31,7 +29,7 @@ rsybak - Backup files/directories with histories, using rsync
 
 =head1 VERSION
 
-This document describes version 0.21 of rsybak (from Perl distribution File-RsyBak), released on 2014-08-16.
+This document describes version 0.22 of rsybak (from Perl distribution File-RsyBak), released on 2014-09-05.
 
 =head1 SYNOPSIS
 
@@ -59,7 +57,7 @@ Please visit the project's homepage at L<https://metacpan.org/release/File-RsyBa
 
 =head1 SOURCE
 
-Source repository is at L<https://github.com/sharyanto/perl-File-RsyBak>.
+Source repository is at L<https://github.com/perlancar/perl-File-RsyBak>.
 
 =head1 BUGS
 
@@ -71,11 +69,11 @@ feature.
 
 =head1 AUTHOR
 
-Steven Haryanto <stevenharyanto@gmail.com>
+perlancar <perlancar@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by Steven Haryanto.
+This software is copyright (c) 2014 by perlancar@cpan.org.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

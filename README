@@ -2,8 +2,8 @@ NAME
     File::RsyBak - Backup files/directories with histories, using rsync
 
 VERSION
-    This document describes version 0.21 of File::RsyBak (from Perl
-    distribution File-RsyBak), released on 2014-08-16.
+    This document describes version 0.22 of File::RsyBak (from Perl
+    distribution File-RsyBak), released on 2014-09-05.
 
 SYNOPSIS
     From your Perl program:
@@ -154,7 +154,7 @@ FUNCTIONS
 
         If backup=0 and rotate=1 then will only do history rotating.
 
-    *   source* => *array|str*
+    *   source* => *str*
 
         Director(y|ies) to backup.
 
@@ -332,7 +332,7 @@ HOMEPAGE
     <https://metacpan.org/release/File-RsyBak>.
 
 SOURCE
-    Source repository is at <https://github.com/sharyanto/perl-File-RsyBak>.
+    Source repository is at <https://github.com/perlancar/perl-File-RsyBak>.
 
 BUGS
     Please report any bugs or feature requests on the bugtracker website
@@ -342,10 +342,10 @@ BUGS
     to an existing test-file that illustrates the bug or desired feature.
 
 AUTHOR
-    Steven Haryanto <stevenharyanto@gmail.com>
+    perlancar <perlancar@cpan.org>
 
 COPYRIGHT AND LICENSE
-    This software is copyright (c) 2014 by Steven Haryanto.
+    This software is copyright (c) 2014 by perlancar@cpan.org.
 
     This is free software; you can redistribute it and/or modify it under
     the same terms as the Perl 5 programming language system itself.

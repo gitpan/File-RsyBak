@@ -11,7 +11,7 @@ require Exporter;
 our @ISA       = qw(Exporter);
 our @EXPORT_OK = qw(backup);
 
-our $VERSION = '0.21'; # VERSION
+our $VERSION = '0.22'; # VERSION
 
 our %SPEC;
 
@@ -74,9 +74,10 @@ $SPEC{backup} = {
     args          => {
         source           => {
             summary      => 'Director(y|ies) to backup',
-            schema       => ['any*'   => {
-                of => ['str*', ['array*' => {of=>'str*'}]]
-            }],
+            #schema       => ['any*'   => {
+            #    of => ['str*', ['array*' => {of=>'str*'}]]
+            #}],
+            schema       => 'str*', # temp, because in pericmd when specifying as arg#0, there is a warning of JSON decoding failure
             req          => 1,
             pos          => 0,
         },
@@ -380,7 +381,7 @@ File::RsyBak - Backup files/directories with histories, using rsync
 
 =head1 VERSION
 
-This document describes version 0.21 of File::RsyBak (from Perl distribution File-RsyBak), released on 2014-08-16.
+This document describes version 0.22 of File::RsyBak (from Perl distribution File-RsyBak), released on 2014-09-05.
 
 =head1 SYNOPSIS
 
@@ -538,7 +539,7 @@ Whether to do rotate after backup or not.
 
 If backup=0 and rotate=1 then will only do history rotating.
 
-=item * B<source>* => I<array|str>
+=item * B<source>* => I<str>
 
 Director(y|ies) to backup.
 
@@ -728,7 +729,7 @@ Please visit the project's homepage at L<https://metacpan.org/release/File-RsyBa
 
 =head1 SOURCE
 
-Source repository is at L<https://github.com/sharyanto/perl-File-RsyBak>.
+Source repository is at L<https://github.com/perlancar/perl-File-RsyBak>.
 
 =head1 BUGS
 
@@ -740,11 +741,11 @@ feature.
 
 =head1 AUTHOR
 
-Steven Haryanto <stevenharyanto@gmail.com>
+perlancar <perlancar@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by Steven Haryanto.
+This software is copyright (c) 2014 by perlancar@cpan.org.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
