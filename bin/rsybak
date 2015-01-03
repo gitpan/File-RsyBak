@@ -1,10 +1,10 @@
 #!perl
 
 # Note: This script is a CLI interface to Riap function /File/RsyBak/backup
-# and generated automatically using Dist::Zilla::Plugin::Rinci::ScriptFromFunc version 0.01
+# and generated automatically using Dist::Zilla::Plugin::Rinci::ScriptFromFunc version 0.05
 
-our $DATE = '2014-09-05'; # DATE
-our $VERSION = '0.22'; # VERSION
+our $DATE = '2015-01-03'; # DATE
+our $VERSION = '0.23'; # VERSION
 
 use 5.010001;
 use strict;
@@ -12,7 +12,9 @@ use warnings;
 
 use Perinci::CmdLine;
 
-Perinci::CmdLine->new(url => "/File/RsyBak/backup")->run;
+Perinci::CmdLine->new(
+    url => "/File/RsyBak/backup",
+)->run;
 
 # ABSTRACT: Backup files/directories with histories, using rsync
 # PODNAME: rsybak
@@ -29,27 +31,169 @@ rsybak - Backup files/directories with histories, using rsync
 
 =head1 VERSION
 
-This document describes version 0.22 of rsybak (from Perl distribution File-RsyBak), released on 2014-09-05.
+This document describes version 0.23 of rsybak (from Perl distribution File-RsyBak), released on 2015-01-03.
 
 =head1 SYNOPSIS
 
 Usage:
 
- % rsybak
+ % rsybak [options] <source> <target>
 
 Examples:
 
- TODO
-
-To see all options:
-
- % rsybak --help
-
-=head1 DESCRIPTION
+ % rsybak /home/jajang/mydata /backup/jajang/mydata
 
 =head1 OPTIONS
 
- TODO
+C<*> marks required options.
+
+=over
+
+=item B<--config-path>=I<s>
+
+Set path to configuration file.
+
+Can be specified multiple times.
+
+=item B<--config-profile>=I<s>
+
+Set configuration profile to use.
+
+=item B<--extra-dir>
+
+Whether to force creation of source directory in target.
+
+If set to 1, then backup(source => '/a', target => '/backup/a') will create
+another 'a' directory in target, i.e. /backup/a/current/a. Otherwise, contents
+of a/ will be directly copied under /backup/a/current/.
+
+Will always be set to 1 if source is more than one, but default to 0 if source
+is a single directory. You can set this to 1 to so that behaviour when there is
+a single source is the same as behaviour when there are several sources.
+
+
+=item B<--extra-rsync-opts-json>=I<s>
+
+Pass extra options to rsync command (JSON-encoded).
+
+See C<--extra-rsync-opts>.
+
+=item B<--extra-rsync-opts-yaml>=I<s>
+
+Pass extra options to rsync command (YAML-encoded).
+
+See C<--extra-rsync-opts>.
+
+=item B<--extra-rsync-opts>=I<s@>
+
+Pass extra options to rsync command.
+
+Extra options to pass to rsync command when doing backup. Note that the options
+will be shell quoted, , so you should pass it unquoted, e.g. ['--exclude',
+'/Program Files'].
+
+
+Can be specified multiple times.
+
+=item B<--format-options>=I<s>
+
+Pass options to formatter.
+
+=item B<--format>=I<s>
+
+Choose output format, e.g. json, text.
+
+=item B<--help>, B<-h>, B<-?>
+
+Display this help message.
+
+=item B<--histories-json>=I<s>
+
+Histories/history levels (JSON-encoded).
+
+See C<--histories>.
+
+=item B<--histories-yaml>=I<s>
+
+Histories/history levels (YAML-encoded).
+
+See C<--histories>.
+
+=item B<--histories>=I<s@>
+
+Histories/history levels.
+
+Default value:
+
+ [-7, 4, 3]
+
+Specifies number of backup histories to keep for level 1, 2, and so on. If
+number is negative, specifies number of days to keep instead (regardless of
+number of histories).
+
+
+Can be specified multiple times.
+
+=item B<--no-backup>
+
+If backup=1 and rotate=0 then will only create new backup without rotating
+histories.
+
+
+=item B<--no-config>
+
+Do not use any configuration file.
+
+=item B<--no-rotate>
+
+If backup=0 and rotate=1 then will only do history rotating.
+
+
+=item B<--source>=I<s>*
+
+Director(y|ies) to backup.
+
+=item B<--target>=I<s>*
+
+Backup destination.
+
+=item B<--version>, B<-v>
+
+=back
+
+=head1 FILES
+
+B</etc/rsybak.conf>
+
+B<~/rsybak.conf>
+
+=head1 COMPLETION
+
+This script has shell tab completion capability with support for several shells.
+
+=head2 bash
+
+To activate bash completion for this script, put:
+
+ complete -C rsybak rsybak
+
+in your bash startup (e.g. C<~/.bashrc>). Your next shell session will then recognize tab completion for the command. Or, you can also directly execute the line above in your shell to activate immediately.
+
+It is recommended, however, that you install L<shcompgen> which allows you to activate completion scripts for several kinds of scripts on multiple shells. Some CPAN distributions (those that are built with L<Dist::Zilla::Plugin::GenShellCompletion>) will even automatically enable shell completion for their included scripts (using C<shcompgen>) at installation time, so you can immadiately have tab completion.
+
+=head2 tcsh
+
+To activate tcsh completion for this script, put:
+
+ complete rsybak 'p/*/`rsybak`/'
+
+in your tcsh startup (e.g. C<~/.tcshrc>). Your next shell session will then recognize tab completion for the command. Or, you can also directly execute the line above in your shell to activate immediately.
+
+It is also recommended to install C<shcompgen> (see above).
+
+=head2 other shells
+
+For fish and zsh, install C<shcompgen> as described above.
 
 =head1 HOMEPAGE
 
@@ -57,7 +201,7 @@ Please visit the project's homepage at L<https://metacpan.org/release/File-RsyBa
 
 =head1 SOURCE
 
-Source repository is at L<https://github.com/perlancar/perl-File-RsyBak>.
+Source repository is at L<https://github.com/sharyanto/perl-File-RsyBak>.
 
 =head1 BUGS
 
@@ -73,7 +217,7 @@ perlancar <perlancar@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by perlancar@cpan.org.
+This software is copyright (c) 2015 by perlancar@cpan.org.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.

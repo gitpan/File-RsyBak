@@ -1,11 +1,5 @@
-NAME
-    File::RsyBak - Backup files/directories with histories, using rsync
-
-VERSION
-    This document describes version 0.22 of File::RsyBak (from Perl
-    distribution File-RsyBak), released on 2014-09-05.
-
 SYNOPSIS
+
     From your Perl program:
 
      use File::RsyBak qw(backup);
@@ -26,7 +20,7 @@ SYNOPSIS
      myfile
      anotherfile
      mydir/
-
+    
      % ls /backup/mydata/
      current/
      hist.2013-10-31@12:04:17+00/
@@ -43,19 +37,19 @@ SYNOPSIS
      hist3.2013-08-31@12:05:31+00/
      hist3.2013-10-02@12:05:57+00/
 
-    Each directory under "/backup/mydata" is a "snapshot" backup of
-    "/path/to/mydata":
+    Each directory under /backup/mydata is a "snapshot" backup of
+    /path/to/mydata:
 
      % ls /backup/mydata/current/
      myfile
      anotherfile
      mydir/
-
+    
      % ls /backup/mydata/hist.2013-10-31@12:04:17+00/
      myfile
      anotherfile
      mydir/
-
+    
      % ls /backup/mydata/hist3.2013-10-02@12:05:57+00/
      myfile
      anotherfile
@@ -63,120 +57,48 @@ SYNOPSIS
      someoldfile
 
 DESCRIPTION
+
     This module is basically just a wrapper around rsync to create a
     filesystem backup system. Some characteristics of this backup system:
 
-    *   Supports backup histories and history levels
+      * Supports backup histories and history levels
 
-        For example, you can create 7 level-1 backup histories (equals 7
-        daily histories if you run backup once daily), 4 level-2 backup
-        histories (equals 4 weekly histories) and 3 level-3 backup histories
-        (roughly equals 3 monthly histories). The number of levels and
-        history per levels are customizable.
+      For example, you can create 7 level-1 backup histories (equals 7
+      daily histories if you run backup once daily), 4 level-2 backup
+      histories (equals 4 weekly histories) and 3 level-3 backup histories
+      (roughly equals 3 monthly histories). The number of levels and
+      history per levels are customizable.
 
-    *   Backups (and histories) are not compressed/archived ("tar"-ed)
+      * Backups (and histories) are not compressed/archived ("tar"-ed)
 
-        They are just verbatim copies (produced by "rsync -a") of source
-        directory. The upside of this is ease of cherry-picking
-        (taking/restoring individual files from backup). The downside is
-        lack of compression and the backup not being a single archive file.
+      They are just verbatim copies (produced by "rsync -a") of source
+      directory. The upside of this is ease of cherry-picking
+      (taking/restoring individual files from backup). The downside is lack
+      of compression and the backup not being a single archive file.
 
-        This is because rsync needs two real directory trees when comparing.
-        Perhaps if rsync supports tar virtual filesystem in the future...
+      This is because rsync needs two real directory trees when comparing.
+      Perhaps if rsync supports tar virtual filesystem in the future...
 
-    *   Hardlinks are used between backup histories to save disk space
+      * Hardlinks are used between backup histories to save disk space
 
-        This way, we can maintain several backup histories without wasting
-        too much space duplicating data when there are not a lot of
-        differences among them.
+      This way, we can maintain several backup histories without wasting
+      too much space duplicating data when there are not a lot of
+      differences among them.
 
-    *   High performance
+      * High performance
 
-        Rsync is implemented in C and has been optimized for a long time. rm
-        is also used instead of Perl implementation File::Path::remove_path.
+      Rsync is implemented in C and has been optimized for a long time. rm
+      is also used instead of Perl implementation File::Path::remove_path.
 
-    *   Unix-specific
+      * Unix-specific
 
-        There are ports of rsync and rm on Windows, but this module hasn't
-        been tested on those platforms.
-
-    This module uses Log::Any logging framework.
-
-FUNCTIONS
-  backup(%args) -> [status, msg, result, meta]
-    Backup files/directories with histories, using rsync.
-
-    Examples:
-
-     backup( source => "/home/steven/mydata", target => "/backup/steven/mydata");
-    Arguments ('*' denotes required arguments):
-
-    *   backup => *bool* (default: 1)
-
-        Whether to do backup or not.
-
-        If backup=1 and rotate=0 then will only create new backup without
-        rotating histories.
-
-    *   extra_dir => *bool*
-
-        Whether to force creation of source directory in target.
-
-        If set to 1, then backup(source => '/a', target => '/backup/a') will
-        create another 'a' directory in target, i.e. /backup/a/current/a.
-        Otherwise, contents of a/ will be directly copied under
-        /backup/a/current/.
-
-        Will always be set to 1 if source is more than one, but default to 0
-        if source is a single directory. You can set this to 1 to so that
-        behaviour when there is a single source is the same as behaviour
-        when there are several sources.
-
-    *   extra_rsync_opts => *array*
-
-        Pass extra options to rsync command.
-
-        Extra options to pass to rsync command when doing backup. Note that
-        the options will be shell quoted, , so you should pass it unquoted,
-        e.g. ['--exclude', '/Program Files'].
-
-    *   histories => *array* (default: [-7, 4, 3])
-
-        Histories/history levels.
-
-        Specifies number of backup histories to keep for level 1, 2, and so
-        on. If number is negative, specifies number of days to keep instead
-        (regardless of number of histories).
-
-    *   rotate => *bool* (default: 1)
-
-        Whether to do rotate after backup or not.
-
-        If backup=0 and rotate=1 then will only do history rotating.
-
-    *   source* => *str*
-
-        Director(y|ies) to backup.
-
-    *   target* => *str*
-
-        Backup destination.
-
-    Return value:
-
-    Returns an enveloped result (an array).
-
-    First element (status) is an integer containing HTTP status code (200
-    means OK, 4xx caller error, 5xx function error). Second element (msg) is
-    a string containing error message, or 'OK' if status is 200. Third
-    element (result) is optional, the actual result. Fourth element (meta)
-    is called result metadata and is optional, a hash that contains extra
-    information.
-
-     (any)
+      There are ports of rsync and rm on Windows, but this module hasn't
+      been tested on those platforms.
 
 HOW IT WORKS
-  First-time backup
+
+ First-time backup
+
     First, we lock target directory to prevent other backup process from
     interfering:
 
@@ -202,7 +124,8 @@ HOW IT WORKS
 
      unlock   TARGET/.lock
 
-  Subsequent backups (after TARGET/current exists)
+ Subsequent backups (after TARGET/current exists)
+
     First, we lock target directory to prevent other backup process to
     interfere:
 
@@ -226,9 +149,10 @@ HOW IT WORKS
 
      unlock   TARGET/.lock
 
-  Maintenance of histories/history levels
-    TARGET/hist.* are level-1 backup histories. Each backup run will produce
-    a new history:
+ Maintenance of histories/history levels
+
+    TARGET/hist.* are level-1 backup histories. Each backup run will
+    produce a new history:
 
      TARGET/hist.<timestamp1>
      TARGET/hist.<timestamp2> # produced by the next backup
@@ -237,10 +161,10 @@ HOW IT WORKS
      TARGET/hist.<timestamp5>
      ...
 
-    You can specify the number of histories (or number of days) to maintain.
-    If the number of histories exceeds the limit, older histories will be
-    deleted, or one will be promoted to the next level, if a higher level is
-    specified.
+    You can specify the number of histories (or number of days) to
+    maintain. If the number of histories exceeds the limit, older histories
+    will be deleted, or one will be promoted to the next level, if a higher
+    level is specified.
 
     For example, with histories being set to [7, 4, 3], after
     TARGET/hist.<timestamp8> is created, TARGET/hist.<timestamp1> will be
@@ -268,6 +192,7 @@ HOW IT WORKS
     TARGET/hist3.<timestamp85> comes along.
 
 HISTORY
+
     The idea for this module came out in 2006 as part of the Spanel hosting
     control panel project. We need a daily backup system for shared hosting
     accounts that supports histories and cherry-picking. Previously we had
@@ -284,29 +209,35 @@ HISTORY
     PCs/laptops.
 
 FAQ
-  How do I exclude some directories?
+
+ How do I exclude some directories?
+
     Just use rsync's --exclude et al. Pass them to extra_rsync_opts.
 
-  What is a good backup practice (using RsyBak)?
+ What is a good backup practice (using RsyBak)?
+
     Just follow the general practice. While this is not a place to discuss
     backups in general, some of the principles are:
 
-    *   backup regularly (e.g. once daily or more often)
+      * backup regularly (e.g. once daily or more often)
 
-    *   automate the process (else you'll forget)
+      * automate the process (else you'll forget)
 
-    *   backup to another disk partition and computer
+      * backup to another disk partition and computer
 
-    *   verify your backups often (what good are they if they can't be
-        restored)
+      * verify your backups often (what good are they if they can't be
+      restored)
 
-    *   make sure your backup is secure (encrypted, correct permission, etc)
+      * make sure your backup is secure (encrypted, correct permission,
+      etc)
 
-  How do I restore backups?
+ How do I restore backups?
+
     Backups are just verbatim copies of files/directories, so just use
     whatever filesystem tools you like.
 
-  How to do remote backup?
+ How to do remote backup?
+
     From your backup host:
 
      [BAK-HOST]% rsybak --source USER@SRC-HOST:/path --dest /backup/dir
@@ -314,10 +245,8 @@ FAQ
     Or alternatively, you can backup on SRC-HOST locally first, then send
     the resulting backup to BAK-HOST.
 
-TODO
-    * Allow ionice etc instead of just nice -n19
-
 SEE ALSO
+
     File::Backup
 
     File::Rotate::Backup
@@ -326,27 +255,4 @@ SEE ALSO
     (rsync snapshots), created in as early as 2004 (or earlier) by Mike
     Heins. Do check it out. I wish I had found it first before reinventing
     it in 2006 :-)
-
-HOMEPAGE
-    Please visit the project's homepage at
-    <https://metacpan.org/release/File-RsyBak>.
-
-SOURCE
-    Source repository is at <https://github.com/perlancar/perl-File-RsyBak>.
-
-BUGS
-    Please report any bugs or feature requests on the bugtracker website
-    <https://rt.cpan.org/Public/Dist/Display.html?Name=File-RsyBak>
-
-    When submitting a bug or request, please include a test-file or a patch
-    to an existing test-file that illustrates the bug or desired feature.
-
-AUTHOR
-    perlancar <perlancar@cpan.org>
-
-COPYRIGHT AND LICENSE
-    This software is copyright (c) 2014 by perlancar@cpan.org.
-
-    This is free software; you can redistribute it and/or modify it under
-    the same terms as the Perl 5 programming language system itself.
 

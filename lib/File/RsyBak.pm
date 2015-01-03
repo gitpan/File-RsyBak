@@ -1,5 +1,8 @@
 package File::RsyBak;
 
+our $DATE = '2015-01-03'; # DATE
+our $VERSION = '0.23'; # VERSION
+
 use 5.010001;
 use strict;
 use warnings;
@@ -10,8 +13,6 @@ use File::chdir;
 require Exporter;
 our @ISA       = qw(Exporter);
 our @EXPORT_OK = qw(backup);
-
-our $VERSION = '0.22'; # VERSION
 
 our %SPEC;
 
@@ -157,11 +158,11 @@ _
 
     examples => [
         {
-            argv         => ['/home/steven/mydata','/backup/steven/mydata'],
+            argv         => ['/home/jajang/mydata','/backup/jajang/mydata'],
             test         => 0,
             description  => <<'_',
 
-Backup /home/steven/mydata to /backup/steven/mydata using the default number of
+Backup /home/jajang/mydata to /backup/jajang/mydata using the default number of
 histories ([-7, 4, 3]).
 
 _
@@ -381,7 +382,7 @@ File::RsyBak - Backup files/directories with histories, using rsync
 
 =head1 VERSION
 
-This document describes version 0.22 of File::RsyBak (from Perl distribution File-RsyBak), released on 2014-09-05.
+This document describes version 0.23 of File::RsyBak (from Perl distribution File-RsyBak), released on 2015-01-03.
 
 =head1 SYNOPSIS
 
@@ -482,8 +483,6 @@ on those platforms.
 
 =back
 
-This module uses Log::Any logging framework.
-
 =head1 FUNCTIONS
 
 
@@ -493,7 +492,7 @@ Backup files/directories with histories, using rsync.
 
 Examples:
 
- backup( source => "/home/steven/mydata", target => "/backup/steven/mydata");
+ backup( source => "/home/jajang/mydata", target => "/backup/jajang/mydata");
 Arguments ('*' denotes required arguments):
 
 =over 4
@@ -517,7 +516,7 @@ Will always be set to 1 if source is more than one, but default to 0 if source
 is a single directory. You can set this to 1 to so that behaviour when there is
 a single source is the same as behaviour when there are several sources.
 
-=item * B<extra_rsync_opts> => I<array>
+=item * B<extra_rsync_opts> => I<array[str]>
 
 Pass extra options to rsync command.
 
@@ -525,7 +524,7 @@ Extra options to pass to rsync command when doing backup. Note that the options
 will be shell quoted, , so you should pass it unquoted, e.g. ['--exclude',
 '/Program Files'].
 
-=item * B<histories> => I<array> (default: [-7, 4, 3])
+=item * B<histories> => I<array[int]> (default: [-7, 4, 3])
 
 Histories/history levels.
 
@@ -549,8 +548,6 @@ Backup destination.
 
 =back
 
-Return value:
-
 Returns an enveloped result (an array).
 
 First element (status) is an integer containing HTTP status code
@@ -560,8 +557,7 @@ First element (status) is an integer containing HTTP status code
 element (meta) is called result metadata and is optional, a hash
 that contains extra information.
 
- (any)
-
+Return value:  (any)
 =head1 HOW IT WORKS
 
 =head2 First-time backup
@@ -709,10 +705,6 @@ From your backup host:
 Or alternatively, you can backup on SRC-HOST locally first, then send the
 resulting backup to BAK-HOST.
 
-=head1 TODO
-
-* Allow ionice etc instead of just nice -n19
-
 =head1 SEE ALSO
 
 L<File::Backup>
@@ -729,7 +721,7 @@ Please visit the project's homepage at L<https://metacpan.org/release/File-RsyBa
 
 =head1 SOURCE
 
-Source repository is at L<https://github.com/perlancar/perl-File-RsyBak>.
+Source repository is at L<https://github.com/sharyanto/perl-File-RsyBak>.
 
 =head1 BUGS
 
@@ -745,7 +737,7 @@ perlancar <perlancar@cpan.org>
 
 =head1 COPYRIGHT AND LICENSE
 
-This software is copyright (c) 2014 by perlancar@cpan.org.
+This software is copyright (c) 2015 by perlancar@cpan.org.
 
 This is free software; you can redistribute it and/or modify it under
 the same terms as the Perl 5 programming language system itself.
